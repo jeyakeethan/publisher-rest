@@ -4,13 +4,14 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@Component
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -21,14 +22,14 @@ public class UserController {
 		this.repository = repository;
 	}
 	
-	@PostMapping("/login")
-	public String login(@RequestAttribute String username, @RequestAttribute String password) {
+	@PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public User login(@RequestBody User userObj) {
 		
-		Optional<User> user = repository.findByUsername(username);
-		if (user.isPresent() && user.get().getEncryptedPassword().equals(password)) {
-			return new AuthenticationToken(Arrays.asList("Dashboard", "ReadContent", "ReadPremiumContent")).toString();
+		Optional<User> user = repository.findByUsername(userObj.getUsername());
+		if (user.isPresent() && user.get().getEncryptedPassword().equals(userObj.getPassword())) {
+			user.get().setAuthenticationToken(new AuthenticationToken(Arrays.asList("Dashboard", "ReadContent", "ReadPremiumContent")));
+			return user.get();
 		}
-		
 		return null;
 	}
 

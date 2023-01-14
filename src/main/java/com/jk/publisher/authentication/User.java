@@ -1,23 +1,46 @@
 package com.jk.publisher.authentication;
 
 import jakarta.persistence.Table;
-
+import jakarta.persistence.Transient;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Size;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity(name="User")
-@Table(name = "USER", schema = "USERS")
+@Table(name = "USERS", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class User {
-	@Id
-	private String username;
-	private String password;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String about;
-	private String country;
-
 	
+	@Id
+	@Column(length = 10)
+    @Size(min = 20, max = 20)
+	private String username;
+	
+	@Column(length = 64)
+	private String password;
+	
+	@Column(length = 20)
+	private String firstName;
+	
+	@Column(length = 20)
+	private String lastName;
+	
+	@Column(length = 40)
+	private String email;
+	
+	@Column(length = 250)
+	private String about;
+
+	@Column(length = 40)
+	private String country;
+	
+	@Transient
+	private AuthenticationToken authenticationToken;
+
+	@Transient
+	private long loginTimeMillis;
+
 	public String getUsername() {
 		return username;
 	}
@@ -76,5 +99,22 @@ public class User {
 
 	public void setAbout(String about) {
 		this.about = about;
+	}	
+	
+	public AuthenticationToken getAuthenticationToken() {
+		return authenticationToken;
 	}
+
+	public void setAuthenticationToken(AuthenticationToken authenticationToken) {
+		this.authenticationToken = authenticationToken;
+	}
+
+	public long getLoginTimeMillis() {
+		return loginTimeMillis;
+	}
+
+	public void setLoginTimeMillis(long loginTimeMillis) {
+		this.loginTimeMillis = loginTimeMillis;
+	}
+	
 }
