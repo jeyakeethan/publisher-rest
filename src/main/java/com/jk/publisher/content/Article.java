@@ -1,6 +1,8 @@
 package com.jk.publisher.content;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.websocket.Decoder.Text;
 import jakarta.persistence.Id;
@@ -9,8 +11,9 @@ import jakarta.persistence.Id;
 public class Article {
 
 	@Id
-	@Column(length = 10)
-	public String id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	public Long id;
+	
 	@Column(length = 20)
 	public String category;
 	
@@ -19,19 +22,24 @@ public class Article {
 	
 	@Column(columnDefinition="TEXT")
 	public String content;
-	@Column(length = 250)
+	
+	@Column(length = 20)
+	public String author;
+	
+	@Column(length = 2500)
 	public String footerContent;
-	@Column(length = 100)
+	
+	@Column(length = 400)
 	public String imageURL;
 	
 	@Column
 	public int readTime;
 	
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -81,6 +89,14 @@ public class Article {
 
 	public void setReadTime(int readTime) {
 		this.readTime = readTime;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 }

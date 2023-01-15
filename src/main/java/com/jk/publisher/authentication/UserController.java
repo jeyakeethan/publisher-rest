@@ -25,11 +25,16 @@ public class UserController {
 
 	@PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public User signup(@RequestBody User user) throws FailToUpdateDBException {
-		
 		if ((user.getUsername() != null) && (user.getEmail() != null)
 			&& (user.getFirstName() != null) && (user.getLastName() != null)
 		    && (user.getPassword() != null) && (user.getCountry() != null)) {
-			repository.save(user);
+			
+			Optional<User> userX = repository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+			if(userX.isPresent()) {
+				throw new FailToUpdateDBException("A user with the username or email you provided already exists."
+						+ " Try with another username and email.");
+			}
+			return repository.save(user);
 		}
 		throw new FailToUpdateDBException("Something got wrong."
 				+ "Unable to create the user record, please try again later.");

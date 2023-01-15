@@ -4,37 +4,50 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.OneToMany;
 
-@Entity(name="User")
-@Table(name = "USERS", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
+@Entity(name = "User")
+@Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }) })
 public class User {
-	
+
 	@Id
 	@Column(length = 10)
-    @Size(min = 20, max = 20)
+	@Size(min = 1, max = 20)
 	private String username;
-	
+
 	@Column(length = 64)
 	private String password;
-	
+
 	@Column(length = 20)
 	private String firstName;
-	
+
 	@Column(length = 20)
 	private String lastName;
-	
+
 	@Column(length = 40)
 	private String email;
-	
+
 	@Column(length = 250)
 	private String about;
 
 	@Column(length = 40)
 	private String country;
-	
+
+    @ManyToMany(mappedBy = "username")
+    private Set<Author> subscribers;
+
 	@Transient
 	private AuthenticationToken authenticationToken;
 
@@ -88,7 +101,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getEncryptedPassword() {
 		return password;
 	}
@@ -99,8 +112,8 @@ public class User {
 
 	public void setAbout(String about) {
 		this.about = about;
-	}	
-	
+	}
+
 	public AuthenticationToken getAuthenticationToken() {
 		return authenticationToken;
 	}
@@ -116,5 +129,13 @@ public class User {
 	public void setLoginTimeMillis(long loginTimeMillis) {
 		this.loginTimeMillis = loginTimeMillis;
 	}
-	
+
+	private Set<Author> getSubscribers() {
+		return subscribers;
+	}
+
+	private void setSubscribes(Set<Author> subscribers) {
+		this.subscribers = subscribers;
+	}
+
 }

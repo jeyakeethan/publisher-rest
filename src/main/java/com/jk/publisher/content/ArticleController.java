@@ -21,8 +21,8 @@ import com.jk.publisher.authentication.User;
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
-	private static final String ALL = "all";
-	private static final  String TITLE = "title";
+	private static final String ALL = "";
+	private static final String TITLE = "title";
 	private static final String CONTENT = "content";
 	private static final String READ_TIME = "read-time";
 
@@ -34,8 +34,14 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/list")
-	public List<Article> getArticles(String category) {
-		return repository.findAll();
+	public List<Article> getArticles(@RequestParam String category) {
+		List<Article> articles;
+		if (category.equals("")) {
+			articles = repository.findAll();
+		} else {
+			articles = repository.findByCategory(category);
+		}
+		return articles;
 	}
 
 	@RequestMapping(value = "/categories")
@@ -48,8 +54,8 @@ public class ArticleController {
 
 		if (operation.equals(ALL)) {
 			repository.save(article);
-			
-		} else if (!article.getId().equals(null)) {
+
+		} else if (article.getId() != null) {
 			Optional<Article> record = repository.findById(article.getId());
 			if (operation.equals(TITLE)) {
 				record.get().setTitle(article.getTitle());
