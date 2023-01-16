@@ -1,21 +1,16 @@
 package com.jk.publisher.content;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.jk.publisher.authentication.User;
 
 @CrossOrigin
 @RestController
@@ -28,35 +23,32 @@ public class ArticleController {
 
 	@Autowired
 	private final ArticleRepository repository;
+	private final CategoryRepository categoryRepository;
 
-	public ArticleController(ArticleRepository repository) {
+	public ArticleController(ArticleRepository repository, CategoryRepository categoryRepository) {
 		this.repository = repository;
+		this.categoryRepository = categoryRepository;
 	}
 
-	@RequestMapping(value = "/list")
-	public List<Article> getArticles(@RequestParam String category) {
-		List<Article> articles;
-		if (category.equals("")) {
-			articles = repository.findAll();
-		} else {
-			articles = repository.findByCategory(category);
-		}
+	@RequestMapping(value = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Article> getArticles() {
+		List<Article> articles = repository.findAll();
 		return articles;
-	}
-
-	@RequestMapping(value = "/categories")
-	public List<String> getCategoryNames() {
-		return repository.listCategories();
 	}
 
 	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Integer saveArticle(@RequestParam String operation, @RequestBody Article article) {
-
+		Optional<Category> category = categoryRepository.findByCategory(article.getCategory().getCategory());
+		if (!category.isPresent()) {
+			return null;
+			// should throw appropriate exception
+		}
+		article.setCategory(category.get());
 		if (operation.equals(ALL)) {
 			repository.save(article);
-
 		} else if (article.getId() != null) {
 			Optional<Article> record = repository.findById(article.getId());
+			
 			if (operation.equals(TITLE)) {
 				record.get().setTitle(article.getTitle());
 			} else if (operation.equals(CONTENT)) {

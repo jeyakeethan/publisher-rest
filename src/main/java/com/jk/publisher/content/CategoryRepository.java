@@ -8,11 +8,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
-public interface ArticleRepository extends JpaRepository<Article, Long> {
-	
-	public Optional<Article> findById(String id);
-	public List<Article> findByCategory(String category);
-	public Article save(Article article);
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+	public Optional<Category> findById(Long id);
+	public Optional<Category> findByCategory(String category);
+	public Category save(Category category);
 
 }
 

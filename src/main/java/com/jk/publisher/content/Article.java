@@ -1,54 +1,51 @@
 package com.jk.publisher.content;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
-import jakarta.websocket.Decoder.Text;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 @Entity
-@Table(name="ARTICLES")
+@Table(name = "ARTICLES")
 public class Article {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long id;
-	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(length = 100)
+	private String title;
+
+	@Column(columnDefinition = "TEXT")
+	private String content;
+
 	@Column(length = 20)
-	public String category;
-	
-	@Column(length = 100)	
-	public String title;
-	
-	@Column(columnDefinition="TEXT")
-	public String content;
-	
-	@Column(length = 20)
-	public String author;
-	
-	@Column(length = 2500)
-	public String footerContent;
-	
-	@Column(length = 400)
-	public String imageURL;
-	
+	private String author;
+
+	@Column(columnDefinition = "TEXT")
+	private String footerContent;
+
+	@Column(length = 150)
+	private String imageURL;
+
 	@Column
-	public int readTime;
-	
+	private int readTime;
+
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "category")
+	private Category category;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
 	}
 
 	public String getTitle() {
@@ -97,6 +94,14 @@ public class Article {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 
 }

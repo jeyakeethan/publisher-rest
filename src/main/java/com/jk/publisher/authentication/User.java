@@ -6,15 +6,19 @@ import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import com.jk.publisher.content.Category;
+import com.jk.publisher.notification.Notification;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
 
@@ -23,7 +27,7 @@ import jakarta.persistence.OneToMany;
 public class User {
 
 	@Id
-	@Column(length = 10)
+	@Column(length = 20)
 	@Size(min = 1, max = 20)
 	private String username;
 
@@ -45,8 +49,11 @@ public class User {
 	@Column(length = 40)
 	private String country;
 
-    @ManyToMany(mappedBy = "username")
-    private Set<Author> subscribers;
+    @ManyToMany(cascade = CascadeType.REFRESH)
+    private Set<Category> subscriptions;
+
+    @OneToMany(cascade = CascadeType.REFRESH)
+    private Set<Notification> notifications;
 
 	@Transient
 	private AuthenticationToken authenticationToken;
@@ -130,12 +137,20 @@ public class User {
 		this.loginTimeMillis = loginTimeMillis;
 	}
 
-	private Set<Author> getSubscribers() {
-		return subscribers;
+	public Set<Notification> getNotifications() {
+		return notifications;
 	}
 
-	private void setSubscribes(Set<Author> subscribers) {
-		this.subscribers = subscribers;
+	public void setNotifications(Set<Notification> notifications) {
+		this.notifications = notifications;
 	}
 
+	public Set<Category> getSubscriptions() {
+		return subscriptions;
+	}
+
+	public void setSubscriptions(Set<Category> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
+	
 }
