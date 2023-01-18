@@ -17,6 +17,7 @@ public class ArticleDTO {
 		this.setFooterContent(article.getFooterContent());
 		this.setImageURL(article.getImageURL());
 		this.setReadTime(article.getReadTime());
+		this.setAuthor(article.getAuthor());
 	}
 	
 	public Long getId() {

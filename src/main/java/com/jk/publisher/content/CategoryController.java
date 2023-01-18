@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,13 @@ public class CategoryController {
 	}
 
 	@RequestMapping(value = "/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Category getCategory(@RequestParam(value = "category") String category) {
+	public List<ArticleDTO> getCategory(@PathVariable(required = false) String category) {
 
 		Optional<Category> categoryObj = repository.findByCategory(category);
 		if (categoryObj.isPresent()) {
-			return categoryObj.get();
+			List<Article> articles = categoryObj.get().getArticles();
+			List<ArticleDTO> articleDTOs = articles.stream().map((article)-> new ArticleDTO(article)).toList();
+			return articleDTOs;
 		}
 		return null;
 	}

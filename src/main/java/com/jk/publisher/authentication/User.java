@@ -21,6 +21,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity(name = "User")
 @Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }) })
@@ -49,11 +50,14 @@ public class User {
 	@Column(length = 40)
 	private String country;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    private Set<Category> subscriptions;
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "user_categories", joinColumns = { @JoinColumn(name = "username") }, inverseJoinColumns = {
+			@JoinColumn(name = "categoryId") })
+	private Set<Category> subscriptions;
 
-    @OneToMany(cascade = CascadeType.REFRESH)
-    private Set<Notification> notifications;
+	@OneToMany(cascade = CascadeType.REFRESH)
+	@JoinColumn(name = "username")
+	private Set<Notification> notifications;
 
 	@Transient
 	private AuthenticationToken authenticationToken;
@@ -152,5 +156,5 @@ public class User {
 	public void setSubscriptions(Set<Category> subscriptions) {
 		this.subscriptions = subscriptions;
 	}
-	
+
 }

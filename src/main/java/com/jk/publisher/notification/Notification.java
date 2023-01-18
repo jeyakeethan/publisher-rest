@@ -7,12 +7,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 import com.jk.publisher.authentication.User;
 import com.jk.publisher.content.Article;
 
 @Entity(name = "Notification")
-@Table(name = "NOTIFICATION")
+@Table(name = "NOTIFICATIONS")
 public class Notification {
 
 	@Id
@@ -20,17 +21,17 @@ public class Notification {
 
 	@Id
 	@Column(length = 20)
-	@Size(min = 1, max = 20)
 	private String username;
 
 	@Column(length = 20)
 	private String status;
 
-	@ManyToOne
+	@OneToOne
+	@JoinColumn(name="username")
 	private User user;
-
-	@ManyToOne
-	@JoinColumn(name = "articleId", referencedColumnName = "id")
+	
+	@OneToOne
+	@JoinColumn(name="articleId")
 	private Article article;
 
 	public Notification(Long articleId, String username) {
@@ -77,5 +78,5 @@ public class Notification {
 	public void setArticle(Article article) {
 		this.article = article;
 	}
-
+	
 }

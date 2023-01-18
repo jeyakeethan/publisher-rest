@@ -8,7 +8,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+import java.util.Set;
+
+import com.jk.publisher.comments.Comment;
 
 @Entity
 @Table(name = "ARTICLES")
@@ -40,6 +47,10 @@ public class Article {
 	@JoinColumn(name = "category")
 	private Category category;
 
+	@OneToMany(mappedBy = "article",
+            cascade = CascadeType.ALL)
+	private Set<Comment> comments;
+	
 	public Long getId() {
 		return id;
 	}

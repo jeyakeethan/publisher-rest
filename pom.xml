@@ -11,7 +11,7 @@
 	<groupId>com.jk</groupId>
 	<artifactId>publisher</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>publisher</name>
 	<description>A site allows writers to share knowledge and readers to subscribe</description>
 	<properties>

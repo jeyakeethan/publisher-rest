@@ -2,19 +2,22 @@ package com.jk.publisher.content;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.data.annotation.Transient;
 
 import com.jk.publisher.authentication.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -33,11 +36,11 @@ public class Category implements Serializable{
 	@OneToMany
 	@JoinColumn(name = "category")
 	@Transient
-	private Set<Article> articles;
+	private List<Article> articles;
 
-	@ManyToMany
 	@Transient
-	private Set<User> users;
+	@ManyToMany(mappedBy = "subscriptions", cascade = { CascadeType.ALL })
+	private List<User> users;
 
 	public Category () {}
 	
@@ -61,19 +64,19 @@ public class Category implements Serializable{
 		this.category = category;
 	}
 
-	public Set<Article> getArticles() {
+	public List<Article> getArticles() {
 		return articles;
 	}
 
-	public void setArticles(Set<Article> articles) {
+	public void setArticles(List<Article> articles) {
 		this.articles = articles;
 	}
 
-	public Set<User> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
 
-	public void setUsers(Set<User> users) {
+	public void setUsers(List<User> users) {
 		this.users = users;
 	}
 }
