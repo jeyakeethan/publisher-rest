@@ -1,5 +1,6 @@
 package com.jk.publisher.content;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "CATEGORIES", uniqueConstraints = { @UniqueConstraint(columnNames = { "category" }) })
-public class Category {
+public class Category implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

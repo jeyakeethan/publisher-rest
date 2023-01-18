@@ -30,17 +30,24 @@ public class ArticleController {
 		this.categoryRepository = categoryRepository;
 	}
 
-	@RequestMapping(value = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Article> getArticles() {
+	@RequestMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Article getArticles(@RequestParam(name="id") String id) {
+		Optional<Article> article = repository.findById(id);
+		return article.get();
+	}
+	
+	@RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<ArticleDTO> getArticles() {
 		List<Article> articles = repository.findAll();
-		return articles;
+		List<ArticleDTO> articleDTOs = articles.stream().map((article)-> new ArticleDTO(article)).toList();
+		return articleDTOs;
 	}
 
 	@PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Integer saveArticle(@RequestParam String operation, @RequestBody Article article) {
+	public Integer saveArticle(@RequestParam String operation, @RequestBody Article article) throws Exception {
 		Optional<Category> category = categoryRepository.findByCategory(article.getCategory().getCategory());
 		if (!category.isPresent()) {
-			return null;
+			throw new Exception("Unable to fulfil request at this time");
 			// should throw appropriate exception
 		}
 		article.setCategory(category.get());
