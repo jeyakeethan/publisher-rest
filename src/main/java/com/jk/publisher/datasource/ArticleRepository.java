@@ -1,18 +1,18 @@
-package com.jk.publisher.content;
+package com.jk.publisher.datasource;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
+
+import com.jk.publisher.content.Article;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-	
+
 	public Optional<Article> findById(String id);
+
 	public List<Article> findByCategory(String category);
+
 	public Article save(Article article);
 
 }
-

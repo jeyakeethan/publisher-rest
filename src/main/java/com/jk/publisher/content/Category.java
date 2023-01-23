@@ -2,7 +2,6 @@ package com.jk.publisher.content;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.List;
 
 import org.springframework.data.annotation.Transient;
 
@@ -15,9 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;

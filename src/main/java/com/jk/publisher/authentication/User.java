@@ -5,7 +5,6 @@ import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Size;
 
-import java.util.List;
 import java.util.Set;
 
 import com.jk.publisher.content.Category;
@@ -18,10 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 @Entity(name = "User")
 @Table(name = "USERS", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }) })

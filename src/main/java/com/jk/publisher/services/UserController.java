@@ -1,4 +1,4 @@
-package com.jk.publisher.authentication;
+package com.jk.publisher.services;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jk.publisher.authentication.AuthenticationToken;
+import com.jk.publisher.authentication.FailToUpdateDBException;
+import com.jk.publisher.authentication.User;
+import com.jk.publisher.authentication.UserNotFoundException;
+import com.jk.publisher.datasource.UserRepository;
 
 @CrossOrigin
 @RestController

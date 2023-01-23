@@ -1,4 +1,4 @@
-package com.jk.publisher.content;
+package com.jk.publisher.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jk.publisher.content.Article;
+import com.jk.publisher.content.ArticleDTO;
+import com.jk.publisher.content.Category;
+import com.jk.publisher.datasource.CategoryRepository;
 
 @CrossOrigin
 @RestController
@@ -31,7 +35,7 @@ public class CategoryController {
 		Optional<Category> categoryObj = repository.findByCategory(category);
 		if (categoryObj.isPresent()) {
 			List<Article> articles = categoryObj.get().getArticles();
-			List<ArticleDTO> articleDTOs = articles.stream().map((article)-> new ArticleDTO(article)).toList();
+			List<ArticleDTO> articleDTOs = articles.stream().map((article) -> new ArticleDTO(article)).toList();
 			return articleDTOs;
 		}
 		return null;
@@ -40,7 +44,7 @@ public class CategoryController {
 	@RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getCategories() {
 		List<Category> categories = repository.findAll();
-		List<String> strCategories = categories.stream().map((category)-> category.getCategory()).toList();
+		List<String> strCategories = categories.stream().map((category) -> category.getCategory()).toList();
 		return strCategories;
 	}
 

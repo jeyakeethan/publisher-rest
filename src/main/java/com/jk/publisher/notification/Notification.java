@@ -2,11 +2,9 @@ package com.jk.publisher.notification;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 import com.jk.publisher.authentication.User;
@@ -27,11 +25,11 @@ public class Notification {
 	private String status;
 
 	@OneToOne
-	@JoinColumn(name="username")
+	@JoinColumn(name = "username")
 	private User user;
-	
+
 	@OneToOne
-	@JoinColumn(name="articleId")
+	@JoinColumn(name = "articleId")
 	private Article article;
 
 	public Notification(Long articleId, String username) {
@@ -78,5 +76,5 @@ public class Notification {
 	public void setArticle(Article article) {
 		this.article = article;
 	}
-	
+
 }

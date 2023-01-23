@@ -8,8 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -43,14 +41,13 @@ public class Article {
 	@Column
 	private int readTime;
 
-	@ManyToOne(cascade=CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "category")
 	private Category category;
 
-	@OneToMany(mappedBy = "article",
-            cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
 	private Set<Comment> comments;
-	
+
 	public Long getId() {
 		return id;
 	}

@@ -1,4 +1,4 @@
-package com.jk.publisher.content;
+package com.jk.publisher.services;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jk.publisher.content.Article;
+import com.jk.publisher.content.ArticleDTO;
+import com.jk.publisher.content.Category;
+import com.jk.publisher.datasource.ArticleRepository;
+import com.jk.publisher.datasource.CategoryRepository;
 
 @CrossOrigin
 @RestController
@@ -31,15 +37,15 @@ public class ArticleController {
 	}
 
 	@RequestMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Article getArticles(@RequestParam(name="id") String id) {
+	public Article getArticles(@RequestParam(name = "id") String id) {
 		Optional<Article> article = repository.findById(id);
 		return article.get();
 	}
-	
+
 	@RequestMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ArticleDTO> getArticles() {
 		List<Article> articles = repository.findAll();
-		List<ArticleDTO> articleDTOs = articles.stream().map((article)-> new ArticleDTO(article)).toList();
+		List<ArticleDTO> articleDTOs = articles.stream().map((article) -> new ArticleDTO(article)).toList();
 		return articleDTOs;
 	}
 
@@ -55,7 +61,7 @@ public class ArticleController {
 			repository.save(article);
 		} else if (article.getId() != null) {
 			Optional<Article> record = repository.findById(article.getId());
-			
+
 			if (operation.equals(TITLE)) {
 				record.get().setTitle(article.getTitle());
 			} else if (operation.equals(CONTENT)) {
