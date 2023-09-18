@@ -19,7 +19,7 @@ public class ArticleDTO {
 		this.setImageURL(article.getImageURL());
 		this.setReadTime(article.getReadTime());
 		this.setAuthor(article.getAuthor());
-		this.setCategory(article.getCategory().getCategory().toUpperCase());
+		this.setCategory(article.getCategory().getCategory());
 	}
 	
 	public Long getId() {
