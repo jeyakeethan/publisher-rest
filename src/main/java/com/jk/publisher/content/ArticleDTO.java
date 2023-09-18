@@ -8,6 +8,7 @@ public class ArticleDTO {
 	private String author;
 	private String footerContent;
 	private String imageURL;
+	private String category;
 	private int readTime;
 
 	public ArticleDTO(Article article) {
@@ -18,6 +19,7 @@ public class ArticleDTO {
 		this.setImageURL(article.getImageURL());
 		this.setReadTime(article.getReadTime());
 		this.setAuthor(article.getAuthor());
+		this.setCategory(article.getCategory().getCategory().toUpperCase());
 	}
 	
 	public Long getId() {
@@ -74,5 +76,13 @@ public class ArticleDTO {
 
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }
